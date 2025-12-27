@@ -3,18 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>My GitHub Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-    </style>
+    <title>Budhitha Perera | Senior Software Engineer</title>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Welcome to My Website</h1>
-<p>This is hosted on GitHub Pages!</p>
+<nav>
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+</nav>
+<section class="hero-section" id="hero">
+    <img alt="Budhitha Perera" class="profile-img" src="image/profile.png">
+    <h1>Budhitha Perera</h1>
+    <h2>Senior Software Engineer | Full Stack Developer</h2>
+    <p>Passionate about building scalable web applications and innovative solutions.</p>
+    <div class="hero-contact">
+        <span class="location">Pori, Finland</span> |
+        <a class="phone" href="tel:+358468023509" style="text-decoration:none;font-size:1.2em;vertical-align:middle;"
+           title="Call Budhitha">
+            📞
+        </a>
+    </div>
+    <div id="visit-counter" style="margin-top:10px;font-size:1em;color:#0077b5;"></div>
+    <a class="linkedin-btn" href="https://www.linkedin.com/in/budhitha-perera/" target="_blank">View LinkedIn</a>
+</section>
+<section id="about">
+    <h2>About Me</h2>
+    <p>Experienced Software Engineer with a demonstrated history of working in the information technology and services
+        industry. Skilled in Java, Spring Boot, React, and cloud technologies. Strong engineering professional with a
+        Bachelor of Science (BSc) focused in Computer Science.</p>
+</section>
+<section id="experience">
+    <h2>Experience</h2>
+    <div class="experience-list">
+        <div class="experience-item">
+            <h3>Software Engineer</h3>
+            <span>WSO2</span> | <span>Jan 2022 – Present</span>
+            <p>Developing and maintaining enterprise-grade integration solutions using Java, Spring Boot, and
+                cloud-native technologies. Collaborating with cross-functional teams to deliver high-quality software
+                products.</p>
+        </div>
+        <div class="experience-item">
+            <h3>Intern Software Engineer</h3>
+            <span>WSO2</span> | <span>Jun 2021 – Dec 2021</span>
+            <p>Contributed to open-source projects and assisted in the development of internal tools for process
+                automation.</p>
+        </div>
+    </div>
+</section>
+<section id="education">
+    <h2>Education</h2>
+    <div class="education-list">
+        <div class="education-item">
+            <h3>BSc (Hons) in Computer Science</h3>
+            <span>University of Colombo School of Computing</span> | <span>2018 – 2022</span>
+        </div>
+    </div>
+</section>
+<section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-list">
+        <span>Python</span>
+        <span>TypeScript</span>
+        <span>JavaScript</span>
+        <span>Java</span>
+        <span>Spring Boot</span>
+        <span>React</span>
+        <span>Node.js</span>
+        <span>Cloud Computing</span>
+        <span>Docker</span>
+        <span>SQL</span>
+        <span>Git</span>
+    </div>
+</section>
+<section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-list">
+        <div class="project-item" onclick="window.open('https://github.com/budhithaperera/awesome-project', '_blank')">
+            <h3>Awesome Project</h3>
+            <p>A web application for managing tasks and productivity, built with React and Spring Boot.</p>
+        </div>
+        <div class="project-item" onclick="window.open('https://github.com/budhithaperera/another-project', '_blank')">
+            <h3>Another Project</h3>
+            <p>Cloud-native microservices platform for scalable data processing.</p>
+        </div>
+    </div>
+    <h3 style="margin-top:32px;">GitHub Repositories</h3>
+    <div class="projects-list" id="github-repos"></div>
+</section>
+<script>
+    // Smooth scroll for navigation
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Fetch and display GitHub repositories
+    fetch('https://api.github.com/users/budhithaperera/repos?sort=updated')
+      .then(response => response.json())
+      .then(repos => {
+        const container = document.getElementById('github-repos');
+        if (!Array.isArray(repos)) return;
+        repos.forEach(repo => {
+          // Skip forked repos for clarity
+          if (repo.fork) return;
+          const div = document.createElement('div');
+          div.className = 'project-item';
+          div.onclick = () => window.open(repo.html_url, '_blank');
+          div.innerHTML = `<h4>${repo.name}</h4><p>${repo.description ? repo.description : ''}</p>`;
+          container.appendChild(div);
+        });
+        if (container.children.length === 0) {
+          container.innerHTML = '<p>No public repositories found.</p>';
+        }
+      })
+      .catch(() => {
+        const container = document.getElementById('github-repos');
+        container.innerHTML = '<p>Could not load repositories.</p>';
+      });
+
+    // Page visit counter using CountAPI
+    fetch('https://api.countapi.xyz/hit/budhitha.github.io/visits')
+      .then(res => res.json())
+      .then(res => {
+        const counter = document.getElementById('visit-counter');
+        if (counter) {
+          counter.textContent = `👁️ Page visits: ${res.value}`;
+        }
+      });
+</script>
 </body>
 </html>
